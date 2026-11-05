@@ -1,0 +1,9 @@
+# Fig 4. Defaults stated p8, grids read from markers (U13). 50 seeds by D3.
+kind: timing
+seeds: 50
+defaults: {model: nn, teacher: zero, n: 50, m: 1000, d: 50, lam: 0.05, nu2: 1.0, eta: 1.0e-4, n_test: 5000}
+panels:
+  a: {param: lam, values: [0.05, 0.1, 0.2, 0.4, 0.8, 1.6]}
+  b: {param: n, values: [10, 20, 40, 80, 160]}
+  c: {param: m, values: [2000, 2500, 3000, 3500, 4000]}
+  d: {param: nu2, values: [0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4]}

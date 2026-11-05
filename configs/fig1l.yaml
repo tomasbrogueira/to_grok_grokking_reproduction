@@ -1,0 +1,6 @@
+# Fig 1 left. Stated p8: n, m, lambda, nu^2, eta. d and features derived (U3).
+kind: curves
+seeds: 50
+defaults: {model: rf_relu, teacher: zero, n: 100, m: 10000, d: 100, lam: 1.0e-5, nu2: 1.0, eta: 1.0}
+panels:
+  main: {}

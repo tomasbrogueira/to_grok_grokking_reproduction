@@ -1,0 +1,6 @@
+# Fig 5, both panels from one run. Stated p22. Teacher, features, nu^2 assumed (U3, U4, U14).
+kind: curves
+seeds: 1
+defaults: {model: rf_relu, teacher: zero, n: 100, m: 10000, d: 100, lam: 1.0e-5, nu2: 1.0, eta: 1.0}
+panels:
+  main: {}

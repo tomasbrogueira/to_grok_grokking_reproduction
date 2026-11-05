@@ -1,0 +1,7 @@
+# ALTERNATIVE A2 for gap U1: Fig 1L with x uniform on the sphere of radius sqrt(d).
+note: "alternative reading of a gap"
+kind: curves
+seeds: 50
+defaults: {model: rf_relu, teacher: zero, n: 100, m: 10000, d: 100, lam: 1.0e-5, nu2: 1.0, eta: 1.0, x_dist: sphere_sqrt_d}
+panels:
+  main: {}

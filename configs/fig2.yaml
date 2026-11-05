@@ -1,0 +1,9 @@
+# Fig 2. Defaults stated p7, grids read from markers (U13).
+kind: timing
+seeds: 50
+defaults: {model: identity, teacher: unit_linear, n: 100, m: 1000, lam: 1.0e-4, nu2: 1.0, eta: 1.0}
+panels:
+  a: {param: lam, values: [2.0e-6, 4.0e-6, 8.0e-6, 1.6e-5, 3.2e-5]}
+  b: {param: n, values: [10, 20, 40, 80, 160]}
+  c: {param: m, values: [1000, 1500, 2000, 2500, 3000]}
+  d: {param: nu2, values: [1.0, 1.0e+1, 1.0e+2, 1.0e+3, 1.0e+4, 1.0e+5, 1.0e+6]}

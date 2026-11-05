@@ -1,0 +1,7 @@
+# Fig 6. Stated p23. Teacher, features, nu^2 assumed (U4, U14).
+kind: curves
+seeds: 10
+defaults: {model: rf_relu, teacher: zero, n: 100, m: 5000, d: 50, lam: 1.0e-5, nu2: 1.0, eta: 1.0, noise_std: 0.1}
+panels:
+  left: {}
+  right: {param: noise_std, values: [0.01, 0.05, 0.1]}

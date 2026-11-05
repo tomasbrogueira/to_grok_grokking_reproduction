@@ -1,0 +1,9 @@
+# DIAGNOSTIC X3, authorised by D1. Not the stated setup: lambda=0.1 instead of 0.05.
+note: "diagnostic: not the paper's stated setup"
+plot_as: fig4
+kind: timing
+seeds: 50
+defaults: {model: nn, teacher: zero, n: 50, m: 1000, d: 50, lam: 0.1, nu2: 1.0, eta: 1.0e-4, n_test: 5000}
+panels:
+  b: {param: n, values: [10, 20, 40, 80, 160]}
+  c: {param: m, values: [2000, 2500, 3000, 3500, 4000]}

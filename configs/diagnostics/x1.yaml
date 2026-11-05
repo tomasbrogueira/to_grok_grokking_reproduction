@@ -1,0 +1,8 @@
+# DIAGNOSTIC X1, authorised by D1. Not the stated setup: lambda=1e-5 instead of 1e-4.
+note: "diagnostic: not the paper's stated setup"
+plot_as: fig7
+kind: curves
+seeds: 10
+defaults: {model: rff, teacher: feature, n: 100, m: 5000, d: 10, lam: 1.0e-5, nu2: 1.0, sigma2: 1.0, eta: 1.0}
+panels:
+  main: {}

@@ -1,0 +1,6 @@
+# Fig 1 right. Stated p8.
+kind: curves
+seeds: 50
+defaults: {model: nn, teacher: zero, n: 50, m: 1000, d: 50, lam: 0.1, nu2: 1.0, eta: 1.0e-4, n_test: 5000}
+panels:
+  main: {}

@@ -1,0 +1,7 @@
+# ALTERNATIVE A3 for gap U5: Fig 7 with an independent Fourier-feature teacher.
+note: "alternative reading of a gap"
+kind: curves
+seeds: 10
+defaults: {model: rff, teacher: fourier_independent, n: 100, m: 5000, d: 10, lam: 1.0e-4, nu2: 1.0, sigma2: 1.0, eta: 1.0}
+panels:
+  main: {}

@@ -1,0 +1,7 @@
+# ALTERNATIVE A1 for gap U3: Fig 1L with identity features phi(x)=x ~ N(0, I/m).
+note: "alternative reading of a gap"
+kind: curves
+seeds: 50
+defaults: {model: identity, teacher: zero, n: 100, m: 10000, lam: 1.0e-5, nu2: 1.0, eta: 1.0}
+panels:
+  main: {}

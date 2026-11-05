@@ -1,0 +1,9 @@
+# Fig 3. Stated p8 and legends.
+kind: curves
+seeds: 10
+defaults: {model: rf_relu, teacher: relu, n: 100, m: 10000, d: 100, lam: 1.0e-5, nu2: 1.0, eta: 1.0}
+panels:
+  a: {param: lam, values: [1.0e-4, 1.0e-5, 1.0e-6]}
+  b: {param: n, values: [100, 200, 500]}
+  c: {param: m, values: [1000, 10000, 100000]}
+  d: {param: nu2, values: [1.0, 5.0, 10.0]}
