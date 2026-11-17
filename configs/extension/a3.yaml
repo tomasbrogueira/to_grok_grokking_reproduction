@@ -1,0 +1,20 @@
+# A3. Can SGD noise delay grokking in setting A? lam = ratio * kappa_bar_min / n.
+# Fixed length 10 / (eta lam) = 4.5 x the predicted t2, so the last 2 / (eta lam) steps are stationary.
+setting: A
+seeds: 50
+problem: {n: 100, m: 1000, nu2: 1.0}
+eta: 1.0
+ratios: [0.01, 0.1, 1, 10]
+sigmas: [0.0, 0.1]
+batch_sizes: [1]
+thresholds: [0.005, 0.01, 0.02, 0.05]
+horizon_factor: 4.5
+cap_factor: 4.5
+tail_window: true
+checkpoint_every: 200000
+smoke:
+  seeds: 2
+  problem: {n: 20, m: 400, nu2: 1.0}
+  ratios: [0.1, 1]
+  sigmas: [0.0, 0.1]
+  checkpoint_every: 256

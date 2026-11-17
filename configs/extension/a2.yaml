@@ -1,0 +1,22 @@
+# A2. Examples needed to grok at each batch size's own step size. b = n is exact GD; b > n is skipped.
+setting: A
+seeds: 50
+m: 1000
+nu2: 1.0
+ns: [50, 100, 300]
+batch_sizes: [1, 4, 16, 64]
+lam: 1.0e-4
+eta_fractions: [0.5, 0.25]  # of eta_max(n, b): the main runs and the robustness check
+probe: {seeds: 10, steps: 10000, grid_per_decade: 400, eta_lo: 1.0e-2, eta_hi: 1.0e+5}
+thresholds: [0.005, 0.01, 0.02, 0.05]
+horizon_factor: 2.0
+cap_factor: 10.0
+checkpoint_every: 200000
+smoke:
+  seeds: 2
+  m: 400
+  ns: [10, 20]
+  batch_sizes: [1, 4]
+  lam: 1.0e-2
+  probe: {seeds: 2, steps: 300, grid_per_decade: 50, eta_lo: 1.0e-2, eta_hi: 1.0e+5}
+  checkpoint_every: 256

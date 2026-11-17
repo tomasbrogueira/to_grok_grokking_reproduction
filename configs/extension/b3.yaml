@@ -1,0 +1,14 @@
+# B3 (optional). Larger step sizes in the network. Run only if B1 or B2 deviates from the linear picture.
+setting: B
+seeds: 20
+model: {n: 50, m: 1000, d: 50, lam: 0.05, nu2: 1.0, n_test: 5000}
+etas: [1.0e-4, 1.0e-3, 1.0e-2]  # the first one is the reference
+batch_sizes: [1]
+thresholds: [0.005, 0.01, 0.02, 0.05]
+cap_factor: 10.0
+checkpoint_every: 20000
+smoke:
+  seeds: 2
+  model: {n: 20, m: 100, d: 10, lam: 0.25, nu2: 1.0, n_test: 200}
+  etas: [0.01, 0.02]
+  checkpoint_every: 50

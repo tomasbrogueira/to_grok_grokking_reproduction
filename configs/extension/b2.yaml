@@ -1,0 +1,14 @@
+# B2. Does the paper's linear mechanism explain grokking in the network? n < d = 50 and n >= d.
+setting: B
+seeds: 20
+model: {m: 1000, d: 50, lam: 0.05, eta: 1.0e-4, nu2: 1.0, n_test: 5000}
+ns: [10, 20, 40, 50, 80, 160]
+batch_sizes: [1]             # b = n is the full-batch GD arm
+thresholds: [0.005, 0.01, 0.02, 0.05]
+cap_factor: 10.0
+checkpoint_every: 20000
+smoke:
+  seeds: 2
+  model: {m: 100, d: 10, lam: 0.25, eta: 0.01, nu2: 1.0, n_test: 200}
+  ns: [5, 20]
+  checkpoint_every: 50

@@ -1,0 +1,19 @@
+# A1. Does minibatching change the weight-decay clock? Setting A defaults, 50 paired seeds.
+setting: A
+seeds: 50
+problem: {n: 100, m: 1000, nu2: 1.0, noise_std: 0.0}
+eta: 1.0
+lam: 1.0e-4
+batch_sizes: [1, 10, 25]    # matched-steps and matched-epochs arms, with replacement
+reshuffle_b: 10
+thresholds: [0.005, 0.01, 0.02, 0.05]
+horizon_factor: 2.0         # run to 2 x the predicted t2, longer only while a seed has not settled
+cap_factor: 10.0            # never beyond 10 x the predicted t2
+checkpoint_every: 200000
+smoke:
+  seeds: 2
+  problem: {n: 20, m: 400, nu2: 1.0, noise_std: 0.0}
+  lam: 1.0e-2
+  batch_sizes: [1, 5]
+  reshuffle_b: 5
+  checkpoint_every: 512

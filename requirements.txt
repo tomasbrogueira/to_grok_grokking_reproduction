@@ -1,0 +1,6 @@
+# Tested with Python 3.12, torch 2.15, numpy 2.5, matplotlib 3.11, PyYAML 6.0, pytest 9.2.
+torch>=2.1
+numpy>=1.26
+matplotlib>=3.8
+pyyaml>=6.0
+pytest>=8.0

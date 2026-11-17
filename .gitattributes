@@ -1,0 +1,2 @@
+# Byte-exact: runs record the SHA-256 of the frozen predictions file.
+anchors/*.json -text

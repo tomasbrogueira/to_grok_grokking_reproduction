@@ -1,0 +1,159 @@
+{
+ "_about": "Predictions and decision rules for the SGD extension (EXTENSION_EXPERIMENTS.md), frozen on 2026-11-16 after runs/a0_full and before any full run of A1-B3. grok/sgd/analysis.py reads every tolerance from this file. Each run records this file's SHA-256 at start. Do not edit after the first full run; record any later change in EXTENSION_NOTES.md.",
+ "frozen_after": {
+  "run": "runs/a0_full",
+  "label": "full CPU run",
+  "seeds": 10,
+  "gd_match_max_relative_error": 3.9e-12,
+  "fact1_max_error": 4.1e-14,
+  "fact2_max_error": 4.6e-15,
+  "eta_max_b1_over_formula_median": {
+   "n50": 1.03,
+   "n100": 1.06,
+   "n300": 1.14
+  },
+  "implied_e2_ratio_over_predicted_median": {
+   "n50": 1.037,
+   "n100": 1.071,
+   "n300": 1.156
+  },
+  "max_delta_L_over_c": 0.012
+ },
+ "defaults": {
+  "eps": 0.01,
+  "c": 0.01,
+  "t1": "last step with L_n = MSE/2 >= eps (primary, U2); the unhalved version is reported beside it",
+  "t2_first": "first step with test loss <= c",
+  "t2_sustained": "first step from which the test loss stays <= c until the end of the run",
+  "setting_B_times": "t2 is interpolated log-linearly between the two bracketing evaluations; the grid value is reported too",
+  "censoring": "a seed without a crossing inside the run is censored: counted and reported, never dropped. Paired statistics use the seeds where both arms crossed.",
+  "paired_statistic": "relative difference (arm - GD) / GD per seed",
+  "bootstrap": {
+   "resamples": 10000,
+   "seed": 20261116,
+   "level": 0.95,
+   "of": "the mean paired relative difference, resampling seeds"
+  },
+  "sweep": [
+   0.005,
+   0.01,
+   0.02,
+   0.05
+  ]
+ },
+ "a1": {
+  "p1_null_space": {
+   "statement": "The null-space loss equals GD's to within 1e-10 relative (Fact 1).",
+   "tolerance": 1e-10,
+   "status": "By construction in the n-dimensional simulator of the full runs. Tested in runs/a0_full on the dense m-dimensional simulator: largest error 4.1e-14."
+  },
+  "p2_matched_steps": {
+   "statement": "Matched steps: t2 in steps is within 1% of GD's for every b.",
+   "arms": "steps_b*, reshuffle_b*",
+   "tolerance": 0.01,
+   "rule": "Holds if, for every arm, no seed is censored and the largest absolute paired relative difference of t2 is <= tolerance, for both the first and the sustained crossing. The reshuffling arm is reported the same way and counts."
+  },
+  "p3_matched_epochs": {
+   "statement": "Matched epochs (eta = b/n): t2 in epochs, t2*b/n, is within 1% of GD's t2 in steps.",
+   "arms": "epochs_b*",
+   "tolerance": 0.01,
+   "rule": "As p2, on t2*b/n."
+  },
+  "p4_t1_order": {
+   "statement": "t1 in steps is about 2x GD's at b = 1 and approaches GD's as b grows. Only the order is tested.",
+   "arm": "steps_b1",
+   "max_ratio": 3.0,
+   "expected_ratio": "2/(2 - 1/b): 2.00, 1.05, 1.02 for b = 1, 10, 25 (mean-square rate argument, approximate)",
+   "rule": "Fails if the median over seeds of t1(b=1)/t1(GD) exceeds max_ratio."
+  },
+  "p5_no_weight_decay": {
+   "statement": "With lam = 0 the test loss stays above the initial null-space loss, about nu^2 (m-n)/m, and t2 is censored for every seed and every b.",
+   "arms": "nowd_gd, nowd_b1",
+   "rule": "Holds if t2 is censored for every seed at every swept c in both arms and the smallest stored test loss is >= the null-space loss at t = 0."
+  },
+  "decision_rule": "If p2 or p3 fails, the study stops until the gap is explained: by Fact 1 a t2 gap can only come from the row-space loss, which is reported for every arm as t2 minus the null-space-only crossing time."
+ },
+ "a2": {
+  "p1_clock": {
+   "statement": "eta*lam*t2 is the same in every arm, to within 2%.",
+   "tolerance": 0.02,
+   "rule": "Per n and step-size fraction, each arm against the b = n (exact GD) arm on the same seeds. Holds if no seed is censored and the largest absolute paired relative difference of eta*lam*t2 is <= tolerance, at fraction 0.5. Fraction 0.25 is the robustness check and is reported the same way."
+  },
+  "p2_eta_max": {
+   "statement": "eta_max(n) = 2/(kappa_max/n + lam), and eta_max(1) is about 2/max_i |x_i|^2.",
+   "tolerance_gd": 0.02,
+   "band_b1": [
+    0.85,
+    1.15
+   ],
+   "rule": "On the 10 probe seeds per n. GD part holds if every seed's measured/formula is within tolerance_gd of 1. b = 1 part holds if the median measured/formula is inside band_b1.",
+   "a0_expectation": "GD ratio 0.994 to 1.000. b = 1 median 1.03, 1.06, 1.14 for n = 50, 100, 300: inside the band, rising with n/m."
+  },
+  "p3_e2_ratio": {
+   "statement": "E2(GD)/E2(b=1) is about kappa_max/max_i |x_i|^2, computed per seed from the data.",
+   "band": [
+    0.85,
+    1.15
+   ],
+   "fraction": 0.5,
+   "rule": "Fails if the median over the 50 seeds of measured/predicted is outside the band for any n/m. E2 = b*t2, first crossing.",
+   "a0_expectation": "EXPECTED TO FAIL at n/m = 0.3. A0 implies a median of about 1.04, 1.07 and 1.16 for n = 50, 100, 300, because 2/max|x_i|^2 is a sufficient bound and not the stability edge. The band is kept as written (user decision of 2026-11-16).",
+   "dependence": "Not independent of p1 and p2: all seeds of an arm share one step size, so the measured ratio is n*eta(1)/eta(n) up to p1's tolerance."
+  },
+  "p4_shape": {
+   "statement": "E2 is flat in b up to a critical batch size, then grows linearly in b.",
+   "rule": "Descriptive. No decision rule in the plan. Reported: E2(b)/E2(1) and eta_max(b)/(b*eta_max(1))."
+  }
+ },
+ "a3": {
+  "pronounced": {
+   "min_ratio": 10.0,
+   "rule": "A condition (n*lam/kappa_bar_min, sigma) is 'pronounced grokking' if exact GD's median t2/t1 over uncensored seeds is >= min_ratio and fewer than half the seeds are censored. t2 is the first step with test loss <= GD's exact limit + c; t1 as in defaults."
+  },
+  "p1_noise_small": {
+   "statement": "DeltaL < c whenever GD's t2/t1 >= 10.",
+   "rule": "DeltaL is the mean over seeds of [mean test loss of b = 1 SGD over the last 2/(eta*lam) steps] - GD's exact limit. Holds if DeltaL < c in every pronounced condition."
+  },
+  "p2_noise_where": {
+   "statement": "DeltaL reaches c only where n*lam/kappa_min >= about 1.",
+   "min_ratio": 1.0,
+   "rule": "Fails if a condition with ratio < min_ratio has DeltaL >= c. 'Not exercised' if no condition reaches c.",
+   "a0_expectation": "EXPECTED NOT TO BE EXERCISED. A0 measured DeltaL <= 0.012 c in all eight conditions: the test loss is |theta - theta*|^2/m and the row space can add at most about (n/m)(1/m + sigma^2)."
+  },
+  "p3_t2_unchanged": {
+   "statement": "SGD changes t2 by less than 5% wherever grokking is pronounced.",
+   "tolerance": 0.05,
+   "rule": "Decision rule of the plan. The claim 'SGD noise can only matter where grokking has already disappeared' is rejected if, in any pronounced condition, the absolute mean paired relative difference of t2 (b = 1 against GD) exceeds tolerance, for the first or the sustained crossing."
+  }
+ },
+ "b1": {
+  "p1_clock": {
+   "statement": "t2 in steps is within 5% of GD's for every b.",
+   "tolerance": 0.05,
+   "rule": "Per b: mean paired relative gap of t2 (first crossing, c = 0.01) with its bootstrap 95% interval. 'Minibatching changes the network's clock' if the absolute gap exceeds tolerance and the interval excludes 0. If so, B3 becomes a priority."
+  }
+ },
+ "b2": {
+  "fact2": {
+   "statement": "For n < d, |W_perp| follows (1 - eta*lam)^t exactly under GD and SGD.",
+   "tolerance": 1e-09,
+   "rule": "Largest |W_perp(t) - (1-eta*lam)^t W_perp(0)| / |W_perp(0)| over all evaluations and seeds. Tolerance 1e-9 over runs of about 2e5 steps (A0 used 1e-10 over 1e4 steps)."
+  },
+  "mechanism": {
+   "statement": "The linear mechanism explains the delay at a given n if both conditions hold.",
+   "max_parallel_fraction": 0.1,
+   "proxy_tolerance": 0.2,
+   "rule": "Per n and arm, on medians over seeds. (1) t2_par <= max_parallel_fraction * t2, where t2_par is the crossing time of the ablated test loss (W replaced by W P_X). (2) |t2_proxy - t2|/t2 <= proxy_tolerance, where t2_proxy is the first time L_perp(0) * (|W_perp| |a| / (|W_perp(0)| |a(0)|))^2 <= c and L_perp(0) is the test mean of (f - f_par)^2 at t = 0. For n >= d, W_perp = 0 and (1) fails by construction.",
+   "otherwise": "Report the ratio to t2 of the times at which three norm proxies of the test loss cross c: L(0)(|a||W P_X|)^2, L(0)|a|^2 and L(0)|W P_X|^2, each relative to t = 0; and the fraction of training activations flipped since t = 0, at t2."
+  }
+ },
+ "b3": {
+  "p1_clock": {
+   "statement": "eta*lam*t2 is the same across eta and b, to within 10%.",
+   "tolerance": 0.1,
+   "stable": "An arm is stable if every seed stays finite and its training loss ends below its initial value. Unstable arms are listed and excluded.",
+   "rule": "Each stable arm against full-batch GD at the first step size, on the same seeds. Holds if the absolute mean paired relative difference of eta*lam*t2 is <= tolerance for every stable arm.",
+   "condition": "Run only if B1 or B2 deviates from the linear picture."
+  }
+ }
+}

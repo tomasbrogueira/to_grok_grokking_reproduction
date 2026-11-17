@@ -1,0 +1,13 @@
+# B1. Does the setting A result carry over to the network? Setting B defaults (configs/fig4.yaml).
+setting: B
+seeds: 50
+model: {n: 50, m: 1000, d: 50, lam: 0.05, eta: 1.0e-4, nu2: 1.0, n_test: 5000}
+batch_sizes: [1, 5, 10, 25]  # with replacement; b = n = 50 is the full-batch GD arm
+thresholds: [0.005, 0.01, 0.02, 0.05]
+cap_factor: 10.0
+checkpoint_every: 20000
+smoke:
+  seeds: 2
+  model: {n: 20, m: 100, d: 10, lam: 0.25, eta: 0.01, nu2: 1.0, n_test: 200}
+  batch_sizes: [1, 5]
+  checkpoint_every: 50

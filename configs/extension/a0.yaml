@@ -1,0 +1,45 @@
+# A0. Correctness checks, run before any prediction is frozen (EXTENSION_EXPERIMENTS.md).
+# Tolerances marked "plan" are the plan's. The others are set here, before the run, and are
+# recorded as such in EXTENSION_NOTES.md.
+seeds: 10
+problem: {n: 100, m: 1000, nu2: 1.0, noise_std: 0.0}
+eta: 1.0
+lam: 1.0e-4
+steps: 10000
+tol_exact: 1.0e-10          # plan: b = n against the closed form, Fact 1, Fact 2
+tol_reduced_vs_dense: 1.0e-8
+fact1_arms: [[1, replace], [10, replace], [25, replace], [10, reshuffle]]
+fact2:
+  model: {n: 20, m: 1000, d: 50, lam: 0.05, nu2: 1.0, n_test: 100}
+  etas: [1.0e-4, 1.0e-3]
+  arms: [[1, replace], [5, replace], [20, full]]
+  steps: 10000
+  every: 50
+approx:
+  m: 1000
+  ns: [50, 100, 300]
+  tol_kappa: 0.10           # relative gap between kappa_min, kappa_max and the Marchenko-Pastur edges
+  tol_eta_gd: 0.02          # measured eta_max(n) against 2 / (kappa_max / n + lam), every seed
+  band_eta_b1: [0.85, 1.15] # median measured eta_max(1) over 2 / max |x_i|^2; A2's decision band
+  probe: {steps: 10000, grid_per_decade: 400, eta_lo: 1.0e-2, eta_hi: 1.0e+5}
+  noise: {n: 100, eta: 1.0, ratios: [0.01, 0.1, 1, 10], sigmas: [0.0, 0.1], c: 0.01, burn_extra: 5000}
+smoke:
+  seeds: 2
+  problem: {n: 12, m: 60, nu2: 1.0, noise_std: 0.0}
+  lam: 1.0e-2
+  steps: 300
+  fact1_arms: [[1, replace], [4, reshuffle]]
+  fact2:
+    model: {n: 5, m: 40, d: 10, lam: 0.25, nu2: 1.0, n_test: 20}
+    etas: [1.0e-2]
+    arms: [[1, replace], [5, full]]
+    steps: 200
+    every: 20
+  approx:
+    m: 60
+    ns: [12]
+    tol_kappa: 0.10
+    tol_eta_gd: 0.02
+    band_eta_b1: [0.85, 1.15]
+    probe: {steps: 300, grid_per_decade: 50, eta_lo: 1.0e-2, eta_hi: 1.0e+5}
+    noise: {n: 12, eta: 1.0, ratios: [1], sigmas: [0.1], c: 0.01, burn_extra: 100}
